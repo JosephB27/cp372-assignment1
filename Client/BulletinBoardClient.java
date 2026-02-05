@@ -416,12 +416,22 @@ public class BulletinBoardClient extends JFrame {
             String response = in.readLine();
             if (response != null) {
                 appendOutput("< " + response);
-                
-                // Read additional lines for multi-line responses
-                if (response.startsWith("OK") && response.contains("\n")) {
-                    String line;
-                    while ((line = in.readLine()) != null && !line.isEmpty()) {
-                        appendOutput(line);
+
+                // Read additional lines for multi-line responses (OK <count>)
+                if (response.startsWith("OK ")) {
+                    String[] parts = response.split(" ", 2);
+                    if (parts.length == 2) {
+                        try {
+                            int count = Integer.parseInt(parts[1]);
+                            for (int i = 0; i < count; i++) {
+                                String line = in.readLine();
+                                if (line != null) {
+                                    appendOutput("  " + line);
+                                }
+                            }
+                        } catch (NumberFormatException e) {
+                            // Not a count-based response, that's OK
+                        }
                     }
                 }
             }
