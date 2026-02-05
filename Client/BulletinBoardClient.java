@@ -298,14 +298,19 @@ public class BulletinBoardClient extends JFrame {
                 return;
             }
             
+            int xVal, yVal;
             try {
-                Integer.parseInt(x);
-                Integer.parseInt(y);
+                xVal = Integer.parseInt(x);
+                yVal = Integer.parseInt(y);
             } catch (NumberFormatException e) {
                 showError("X and Y must be integers");
                 return;
             }
-            
+            if (xVal < 0 || yVal < 0) {
+                showError("Coordinates must be non-negative");
+                return;
+            }
+
             String cmd = "POST " + x + " " + y + " " + color + " " + message;
             sendCommand(cmd);
             
@@ -344,8 +349,12 @@ public class BulletinBoardClient extends JFrame {
             }
             if (!containsX.isEmpty() && !containsY.isEmpty()) {
                 try {
-                    Integer.parseInt(containsX);
-                    Integer.parseInt(containsY);
+                    int xVal = Integer.parseInt(containsX);
+                    int yVal = Integer.parseInt(containsY);
+                    if (xVal < 0 || yVal < 0) {
+                        showError("Contains coordinates must be non-negative");
+                        return;
+                    }
                     cmd.append(" contains=").append(containsX).append(" ").append(containsY);
                 } catch (NumberFormatException e) {
                     showError("Contains coordinates must be integers");
@@ -366,20 +375,25 @@ public class BulletinBoardClient extends JFrame {
         try {
             String x = pinXField.getText().trim();
             String y = pinYField.getText().trim();
-            
+
             if (x.isEmpty() || y.isEmpty()) {
                 showError("X and Y are required");
                 return;
             }
-            
+
+            int xVal, yVal;
             try {
-                Integer.parseInt(x);
-                Integer.parseInt(y);
+                xVal = Integer.parseInt(x);
+                yVal = Integer.parseInt(y);
             } catch (NumberFormatException e) {
                 showError("X and Y must be integers");
                 return;
             }
-            
+            if (xVal < 0 || yVal < 0) {
+                showError("Coordinates must be non-negative");
+                return;
+            }
+
             sendCommand("PIN " + x + " " + y);
         } catch (Exception e) {
             showError("PIN error: " + e.getMessage());
@@ -390,20 +404,25 @@ public class BulletinBoardClient extends JFrame {
         try {
             String x = pinXField.getText().trim();
             String y = pinYField.getText().trim();
-            
+
             if (x.isEmpty() || y.isEmpty()) {
                 showError("X and Y are required");
                 return;
             }
-            
+
+            int xVal, yVal;
             try {
-                Integer.parseInt(x);
-                Integer.parseInt(y);
+                xVal = Integer.parseInt(x);
+                yVal = Integer.parseInt(y);
             } catch (NumberFormatException e) {
                 showError("X and Y must be integers");
                 return;
             }
-            
+            if (xVal < 0 || yVal < 0) {
+                showError("Coordinates must be non-negative");
+                return;
+            }
+
             sendCommand("UNPIN " + x + " " + y);
         } catch (Exception e) {
             showError("UNPIN error: " + e.getMessage());
