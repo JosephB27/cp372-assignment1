@@ -233,7 +233,8 @@ public class BulletinBoardClient extends JFrame {
             if (handshake != null && handshake.startsWith("WELCOME")) {
                 connected = true;
                 updateUI();
-                appendOutput("Connected: " + handshake);
+                appendOutput("Connected to server!");
+                parseAndDisplayBoardInfo(handshake);
             } else {
                 showError("Invalid handshake from server");
                 disconnect();
@@ -259,6 +260,29 @@ public class BulletinBoardClient extends JFrame {
             appendOutput("Disconnected");
         } catch (IOException e) {
             showError("Disconnect error: " + e.getMessage());
+        }
+    }
+
+    private void parseAndDisplayBoardInfo(String handshake) {
+        // Format: WELCOME boardWidth boardHeight noteWidth noteHeight color1 color2 ...
+        String[] parts = handshake.split(" ");
+        if (parts.length >= 6) {
+            try {
+                String boardW = parts[1];
+                String boardH = parts[2];
+                String noteW = parts[3];
+                String noteH = parts[4];
+                StringBuilder colors = new StringBuilder();
+                for (int i = 5; i < parts.length; i++) {
+                    if (i > 5) colors.append(", ");
+                    colors.append(parts[i]);
+                }
+                appendOutput("  Board size: " + boardW + " x " + boardH);
+                appendOutput("  Note size: " + noteW + " x " + noteH);
+                appendOutput("  Valid colors: " + colors.toString());
+            } catch (Exception e) {
+                appendOutput("  (Could not parse board info)");
+            }
         }
     }
 
