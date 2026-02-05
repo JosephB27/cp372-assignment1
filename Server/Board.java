@@ -19,8 +19,8 @@ public class Board {
         this.pins = new HashSet<>();
     }
 
-    public boolean isColourValid(String colour) {
-        return validColours.contains(colour);
+    public boolean isColorValid(String color) {
+        return validColours.contains(color);
     }
 
     public boolean isNoteWithinBounds(int x, int y) {
@@ -54,9 +54,9 @@ public class Board {
         return false;
     }
 
-    public synchronized String postNote(int x, int y, String colour, String message) {
-        if (!isColourValid(colour)) {
-            return "ERROR COLOUR_NOT_SUPPORTED " + colour + " is not a valid colour";
+    public synchronized String postNote(int x, int y, String color, String message) {
+        if (!isColorValid(color)) {
+            return "ERROR COLOR_NOT_SUPPORTED " + color + " is not a valid color";
         }
         if (!isNoteWithinBounds(x, y)) {
             return "ERROR OUT_OF_BOUNDS Note exceeds board boundaries";
@@ -64,7 +64,7 @@ public class Board {
         if (hasCompleteOverlap(x, y)) {
             return "ERROR COMPLETE_OVERLAP Note with identical position already exists";
         }
-        notes.add(new Note(x, y, colour, message));
+        notes.add(new Note(x, y, color, message));
         return "OK NOTE_POSTED";
     }
 
@@ -76,18 +76,18 @@ public class Board {
             sb.append("NOTE ");
             sb.append(note.x).append(" ");
             sb.append(note.y).append(" ");
-            sb.append(note.colour).append(" ");
+            sb.append(note.color).append(" ");
             sb.append(note.message).append(" ");
             sb.append("PINNED=").append(isNotePinned(note));
         }
         return sb.toString();
     }
 
-    public synchronized String getFilteredNotes(String colour, Integer containsX, Integer containsY, String refersTo) {
+    public synchronized String getFilteredNotes(String color, Integer containsX, Integer containsY, String refersTo) {
         List<Note> matches = new ArrayList<>();
         for (Note note : notes) {
             boolean match = true;
-            if (colour != null && !note.colour.equals(colour)) {
+            if (color != null && !note.color.equals(color)) {
                 match = false;
             }
             if (containsX != null && containsY != null) {
@@ -110,7 +110,7 @@ public class Board {
             sb.append("NOTE ");
             sb.append(note.x).append(" ");
             sb.append(note.y).append(" ");
-            sb.append(note.colour).append(" ");
+            sb.append(note.color).append(" ");
             sb.append(note.message).append(" ");
             sb.append("PINNED=").append(isNotePinned(note));
         }

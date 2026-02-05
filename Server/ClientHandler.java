@@ -112,7 +112,7 @@ public class ClientHandler implements Runnable {
             return board.getAllPins();
         }
 
-        String colour = null;
+        String color = null;
         Integer containsX = null;
         Integer containsY = null;
         String refersTo = null;
@@ -121,8 +121,8 @@ public class ClientHandler implements Runnable {
         int i = 0;
         while (i < tokens.length) {
             String token = tokens[i];
-            if (token.startsWith("colour=")) {
-                colour = token.substring(7);
+            if (token.startsWith("color=")) {
+                color = token.substring(6);
             } else if (token.startsWith("contains=")) {
                 try {
                     containsX = Integer.parseInt(token.substring(9));
@@ -141,7 +141,7 @@ public class ClientHandler implements Runnable {
             i++;
         }
 
-        return board.getFilteredNotes(colour, containsX, containsY, refersTo);
+        return board.getFilteredNotes(color, containsX, containsY, refersTo);
     }
 
     private String handlePin(String args) {
