@@ -9,10 +9,10 @@ public class BulletinBoardClient extends JFrame {
     private JButton connectBtn, disconnectBtn;
     private JTextArea outputArea;
     
-    private JTextField postXField, postYField, postColorField, postMsgField;
+    private JTextField postXField, postYField, postColourField, postMsgField;
     private JButton postBtn;
     
-    private JTextField getColorField, getContainsXField, getContainsYField, getRefersToField;
+    private JTextField getColourField, getContainsXField, getContainsYField, getRefersToField;
     private JButton getAllBtn, getPinsBtn, getFilteredBtn;
     
     private JTextField pinXField, pinYField;
@@ -97,9 +97,9 @@ public class BulletinBoardClient extends JFrame {
         postYField = new JTextField(4);
         panel.add(postYField);
         
-        panel.add(new JLabel("Color:"));
-        postColorField = new JTextField(8);
-        panel.add(postColorField);
+        panel.add(new JLabel("Colour:"));
+        postColourField = new JTextField(8);
+        panel.add(postColourField);
         
         panel.add(new JLabel("Message:"));
         postMsgField = new JTextField(20);
@@ -119,9 +119,9 @@ public class BulletinBoardClient extends JFrame {
         
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         topPanel.add(new JLabel("GET Filters:"));
-        topPanel.add(new JLabel("Color:"));
-        getColorField = new JTextField(8);
-        topPanel.add(getColorField);
+        topPanel.add(new JLabel("Colour:"));
+        getColourField = new JTextField(8);
+        topPanel.add(getColourField);
         
         topPanel.add(new JLabel("Contains X:"));
         getContainsXField = new JTextField(4);
@@ -264,7 +264,7 @@ public class BulletinBoardClient extends JFrame {
     }
 
     private void parseAndDisplayBoardInfo(String handshake) {
-        // Format: WELCOME boardWidth boardHeight noteWidth noteHeight color1 color2 ...
+        // Format: WELCOME boardWidth boardHeight noteWidth noteHeight colour1 colour2 ...
         String[] parts = handshake.split(" ");
         if (parts.length >= 6) {
             try {
@@ -272,14 +272,14 @@ public class BulletinBoardClient extends JFrame {
                 String boardH = parts[2];
                 String noteW = parts[3];
                 String noteH = parts[4];
-                StringBuilder colors = new StringBuilder();
+                StringBuilder colours = new StringBuilder();
                 for (int i = 5; i < parts.length; i++) {
-                    if (i > 5) colors.append(", ");
-                    colors.append(parts[i]);
+                    if (i > 5) colours.append(", ");
+                    colours.append(parts[i]);
                 }
                 appendOutput("  Board size: " + boardW + " x " + boardH);
                 appendOutput("  Note size: " + noteW + " x " + noteH);
-                appendOutput("  Valid colors: " + colors.toString());
+                appendOutput("  Valid colours: " + colours.toString());
             } catch (Exception e) {
                 appendOutput("  (Could not parse board info)");
             }
@@ -290,10 +290,10 @@ public class BulletinBoardClient extends JFrame {
         try {
             String x = postXField.getText().trim();
             String y = postYField.getText().trim();
-            String color = postColorField.getText().trim();
+            String colour = postColourField.getText().trim();
             String message = postMsgField.getText().trim();
-            
-            if (x.isEmpty() || y.isEmpty() || color.isEmpty() || message.isEmpty()) {
+
+            if (x.isEmpty() || y.isEmpty() || colour.isEmpty() || message.isEmpty()) {
                 showError("All POST fields are required");
                 return;
             }
@@ -311,12 +311,12 @@ public class BulletinBoardClient extends JFrame {
                 return;
             }
 
-            String cmd = "POST " + x + " " + y + " " + color + " " + message;
+            String cmd = "POST " + x + " " + y + " " + colour + " " + message;
             sendCommand(cmd);
             
             postXField.setText("");
             postYField.setText("");
-            postColorField.setText("");
+            postColourField.setText("");
             postMsgField.setText("");
         } catch (Exception e) {
             showError("POST error: " + e.getMessage());
@@ -333,19 +333,19 @@ public class BulletinBoardClient extends JFrame {
 
     private void getFiltered() {
         try {
-            String color = getColorField.getText().trim();
+            String colour = getColourField.getText().trim();
             String containsX = getContainsXField.getText().trim();
             String containsY = getContainsYField.getText().trim();
             String refersTo = getRefersToField.getText().trim();
-            
-            if (color.isEmpty() && containsX.isEmpty() && containsY.isEmpty() && refersTo.isEmpty()) {
+
+            if (colour.isEmpty() && containsX.isEmpty() && containsY.isEmpty() && refersTo.isEmpty()) {
                 showError("Specify at least one filter");
                 return;
             }
             
             StringBuilder cmd = new StringBuilder("GET");
-            if (!color.isEmpty()) {
-                cmd.append(" color=").append(color);
+            if (!colour.isEmpty()) {
+                cmd.append(" colour=").append(colour);
             }
             if (!containsX.isEmpty() && !containsY.isEmpty()) {
                 try {
